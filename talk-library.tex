@@ -1,0 +1,733 @@
+\documentclass[usenames,dvipsnames,svgnames,table,unknownkeysallowed]{beamer}
+\usepackage{etex}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage{multimedia}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{hyperref}
+\usepackage[all]{xy}
+\usepackage{multirow}
+\usepackage{cancel}
+\usepackage[normalem]{ulem}
+\usepackage{esdiff}
+\usepackage{tabularx}
+\usepackage{tabulary}
+% \usepackage{switch}
+% \usepackage{tikz-3dplot}
+\usepackage{etoolbox}
+\usepackage{mathtools}
+\usepackage{wrapfig}
+\usepackage{pgf}
+\usepackage{paralist}
+\usepackage{cancel}
+\usepackage{enumitem}
+\usepackage{makecell}%
+\usepackage{pdfpages}
+\usepackage[letterspace=0,tracking=true]{microtype}
+\usepackage[romanian,russian,english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T2A,T1]{fontenc}
+\usepackage{scalefnt}
+\usepackage{qtree}
+\usepackage{xspace}
+\usepackage[boxed,lined,linesnumbered]{algorithm2e}
+\usepackage{ifthen}
+\usepackage{xparse}
+\usepackage{enumitem}
+\usepackage[skins]{tcolorbox}
+
+\newcommand{\TODO}{{\red TODO}\xspace}
+
+\NewDocumentCommand\placeholder{mmo}{
+  \framebox{
+    \begin{minipage}[c][#2]{#1}
+      \centering
+      \IfNoValueTF{#3}{Placeholder}{#3}
+    \end{minipage}
+  }
+}
+
+\usepackage[absolute,overlay]{textpos}
+\newcommand\Cite[1]{%
+  \begin{textblock*}{\paperwidth}(0pt,0.98\textheight)
+    \begin{footnotesize}
+      \hfill #1
+    \end{footnotesize}
+  \end{textblock*}}
+
+\newcommand\Video[4]{%
+  \only<#1>{\includegraphics[width=#4\textwidth]{videos/#3}}%
+  \only<#2>{\movie[externalviewer] {\includegraphics[width=#4\textwidth]{videos/#3}} {videos/#3}}%
+}
+
+\newcommand\Image[3]{%
+  \only<#1>{\includegraphics[width=#3\textwidth]{#2}}%
+}
+
+\newcommand\image[3]{%
+  \uncover<#1>{\includegraphics[width=#3\textwidth]{#2}}%
+}
+
+\newcommand\Task[6]{%
+  \uncover<#1->{\vphantom{$\displaystyle\int_{\blue v}$}%
+    \lightBlueOn<#2-#3>{#4}&%
+    \uncover<#2->{#5}&%
+    \uncover<#2->{%
+      \begin{tiny}#6\end{tiny}%
+    }\\}%
+}
+
+%% I like this but there's the small issue that math looks bad and some slides have wrong spacing
+\RequirePackage[scale=0.95]{tgpagella}
+% \IfFileExists{mathpazo.sty}{\RequirePackage[osf,sc]{mathpazo}}{}
+% \IfFileExists{palatino.sty}{\RequirePackage{palatino}}{}
+% \IfFileExists{helvet.sty}{\RequirePackage[scaled=0.90]{helvet}}{}
+% \IfFileExists{beramono.sty}{\RequirePackage[scaled=0.85]{beramono}}{}
+% \RequirePackage{textcomp}
+
+\newcommand{\FIXME}{\textbf{\textcolor{red}{FIXME}}}
+\newcommand{\theset}[1]{\{#1\}}
+\newcommand\beameritemnestingprefix{}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+
+\def\boolNeuroscience{1}
+\def\boolBasicfMRI{0}
+\def\boolVideoEvents{1}
+\def\boolAssemblyImitation{0}
+\def\boolPublications{0}
+
+\usenavigationsymbolstemplate{}
+
+% Add a period to the end of an abbreviation unless there's one
+% already, then \xspace.
+\makeatletter
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+
+\def\etal{\emph{et al}\onedot}
+\newcommand{\eg}{e.g.,\xspace}
+\newcommand{\Eg}{E.g.,\xspace}
+\newcommand{\ie}{i.e.,\xspace}
+\newcommand{\Ie}{I.e.,\xspace}
+\newcommand{\etc}{etc\onedot}
+\newcommand{\vs}{vs\onedot}
+\makeatother
+
+% TODO Do I really want these versions?
+% \def\etal{\emph{et al}\onedot}
+% \newcommand{\eg}{e.g.,}
+% \newcommand{\Eg}{E.g.,}
+% \newcommand{\ie}{i.e.,}
+% \newcommand{\Ie}{I.e.,}
+% \newcommand{\etc}{etc\onedot}
+% \newcommand{\vs}{vs\onedot}
+% \makeatother
+
+\usetikzlibrary{calc}
+\usetikzlibrary{fit}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{bayesnet}
+\usetikzlibrary{tikzmark}
+\usetikzlibrary{backgrounds}
+\usetikzlibrary{shapes}
+\usetikzlibrary{3d}
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{shapes.geometric}
+
+\newcommand{\savedx}{0}
+\newcommand{\savedy}{0}
+\newcommand{\savedz}{0}
+
+% http://tex.stackexchange.com/questions/6135/how-to-make-beamer-overlays-with-tikz-node
+\tikzset{onslide/.code args={<#1>#2}{%
+    \only<#1>{\pgfkeysalso{#2}} % \pgfkeysalso doesn't change the path
+  }}
+\tikzset{temporal/.code args={<#1>#2#3#4}{%
+    \temporal<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}{\pgfkeysalso{#4}} % \pgfkeysalso doesn't change the path
+  }}
+
+\newcommand{\TicTacToe}{\textsc{Tic Tac Toe}}
+\newcommand{\Hexapawn}{\textsc{Hexapawn}}
+\newcommand{\Prolog}{\mbox{\textsc{Prolog}}}
+\newcommand{\Progol}{\mbox{\textsc{Progol}}}
+\newcommand{\Scheme}{\mbox{\textsc{Scheme}}}
+\newenvironment{lisp}{\begin{tt}\begin{tabular}[t]{l}}{\end{tabular}\end{tt}}
+\newcommand{\protagonist}{\mbox{\small{\textbf{protagonist}}}}
+\newcommand{\antagonist}{\mbox{\small{\textbf{antagonist}}}}
+\newcommand{\wannabe}{\mbox{\small{\textbf{wannabe}}}}
+\newcommand{\ttt}{\mbox{\small{\textsc{Tic Tac Toe}}}}
+\newcommand{\hexp}{\mbox{\small{\textsc{Hexapawn}}}}
+\newcommand{\hexpvar}{\mbox{\small{\textsc{\& $4$ Variants}}}}
+
+\definecolor{green}{rgb}{0,0.69,0}
+\definecolor{brightGreen}{rgb}{0,0.9,0}
+\definecolor{pink}{RGB}{235,0,235}
+\definecolor{blue}{RGB}{0,80,255}
+\definecolor{brightBlue}{RGB}{0,0,255}
+\definecolor{slateblue}{RGB}{71,60,139}
+\definecolor{dullyellow}{RGB}{145,145,0}
+\newcommand{\pink}{\color{pink}}
+\newcommand{\brightGreen}{\color{brightGreen}}
+\newcommand{\purple}{\color{purple}}
+\newcommand{\brightBlue}{\color{brightBlue}}
+\newcommand{\slateblue}{\color{slateblue}}
+\newcommand{\dullyellow}{\color{dullyellow}}
+\newcommand{\positiveExample}[1]{{\color{green} #1}}
+\newcommand{\negativeExample}[1]{{\color{red} #1}}
+
+\newcommand{\prologBoard}[9]{$\!\left[
+    \begin{array}{@{}l@{}l@{}l@{}l@{}l@{}}
+      \left[\right.&\makebox[1em][c]{\text{#1},}&\makebox[1em][c]{\text{#2,}}&\makebox[0.5em][c]{\text{#3}}&\left.\right]\\
+      \left[\right.&\text{#4,}&\text{#5,}&\text{#6}&\left.\right]\\
+      \left[\right.&\text{#7,}&\text{#8,}&\text{#9}&\left.\right]\\
+    \end{array}%
+  \right]\!$}
+
+\newcommand{\pgffancycircle}[2]{\pgfcircle[stroke]{#1}{#2}\pgfcircle[fill]{#1}{#2}}
+
+\newcommand{\pyramid}%
+{%
+  % bottom
+  \draw[black,very thick, fill=white, fill opacity=0.8] (-1,-1,-1) -- (-1,1,-1) -- (1,1,-1) -- (1,-1,-1) -- (-1, -1, -1);
+  \begin{scope}[shift={(0,0,0.2)},scale=0.8]
+    \draw[black,very thick, fill=white, fill opacity=0.8] (-1,-1,-1) -- (-1,1,-1) -- (1,1,-1) -- (1,-1,-1) -- (-1, -1, -1);
+  \end{scope}
+  \begin{scope}[shift={(0,0,0.4)},scale=0.6]
+    \draw[black,very thick, fill=white, fill opacity=0.8] (-1,-1,-1) -- (-1,1,-1) -- (1,1,-1) -- (1,-1,-1) -- (-1, -1, -1);
+  \end{scope}
+  \begin{scope}[shift={(0,0,0.5)},scale=0.4]
+    \draw[black,very thick, fill=white, fill opacity=0.8] (-1,-1,-1) -- (-1,1,-1) -- (1,1,-1) -- (1,-1,-1) -- (-1, -1, -1);
+  \end{scope}
+}
+
+\newcommand{\prism}%
+{%
+  % bottom
+  \draw[black,very thick, fill=white, fill opacity=0.8] (-1,-1,-1) -- (-1,1,-1) -- (1,1,-1) -- (1,-1,-1) -- (-1, -1, -1);
+  \begin{scope}[shift={(0,0,0.4)}]
+    \draw[black,very thick, fill=white, fill opacity=0.8] (-1,-1,-1) -- (-1,1,-1) -- (1,1,-1) -- (1,-1,-1) -- (-1, -1, -1);
+  \end{scope}
+  \begin{scope}[shift={(0,0,0.7)}]
+    \draw[black,very thick, fill=white, fill opacity=0.8] (-1,-1,-1) -- (-1,1,-1) -- (1,1,-1) -- (1,-1,-1) -- (-1, -1, -1);
+  \end{scope}
+  \begin{scope}[shift={(0,0,1.0)}]
+    \draw[black,very thick, fill=white, fill opacity=0.8] (-1,-1,-1) -- (-1,1,-1) -- (1,1,-1) -- (1,-1,-1) -- (-1, -1, -1);
+  \end{scope}
+}
+
+\newcommand{\verticalDiagram}[1]{%
+  \draw[thick] (0,0) rectangle node (events) {Event recognizer} (3,0.5);
+  \draw[thick] (0,-0.5) rectangle node (tracks) {Tracker} (3,-1);
+  \draw[thick] (0,-1.5) rectangle node (objects) {Object detector} (3,-2);
+  \draw[->,thick] (objects) -- (tracks);
+  \draw[->,thick] (tracks) -- (events);
+  \only<#1>{%
+    \draw[red,->,thick] ($(events)+(1ex,-0.3)$) -- ($(tracks)+(1ex,0.3)$);
+    \draw[red,->,thick] ($(tracks)+(1ex,-0.3)$) -- ($(objects)+(1ex,0.3)$);}
+}
+
+\newcommand{\rotateRPY}[4][0/0/0]% point to be saved to \savedxyz, roll, pitch, yaw
+{   \pgfmathsetmacro{\rollangle}{#2}
+  \pgfmathsetmacro{\pitchangle}{#3}
+  \pgfmathsetmacro{\yawangle}{#4}
+
+  % to what vector is the x unit vector transformed, and which 2D vector is this?
+  \pgfmathsetmacro{\newxx}{cos(\yawangle)*cos(\pitchangle)}% a
+  \pgfmathsetmacro{\newxy}{sin(\yawangle)*cos(\pitchangle)}% d
+  \pgfmathsetmacro{\newxz}{-sin(\pitchangle)}% g
+  \path (\newxx,\newxy,\newxz);
+  \pgfgetlastxy{\nxx}{\nxy};
+
+  % to what vector is the y unit vector transformed, and which 2D vector is this?
+  \pgfmathsetmacro{\newyx}{cos(\yawangle)*sin(\pitchangle)*sin(\rollangle)-sin(\yawangle)*cos(\rollangle)}% b
+  \pgfmathsetmacro{\newyy}{sin(\yawangle)*sin(\pitchangle)*sin(\rollangle)+ cos(\yawangle)*cos(\rollangle)}% e
+  \pgfmathsetmacro{\newyz}{cos(\pitchangle)*sin(\rollangle)}% h
+  \path (\newyx,\newyy,\newyz);
+  \pgfgetlastxy{\nyx}{\nyy};
+
+  % to what vector is the z unit vector transformed, and which 2D vector is this?
+  \pgfmathsetmacro{\newzx}{cos(\yawangle)*sin(\pitchangle)*cos(\rollangle)+ sin(\yawangle)*sin(\rollangle)}
+  \pgfmathsetmacro{\newzy}{sin(\yawangle)*sin(\pitchangle)*cos(\rollangle)-cos(\yawangle)*sin(\rollangle)}
+  \pgfmathsetmacro{\newzz}{cos(\pitchangle)*cos(\rollangle)}
+  \path (\newzx,\newzy,\newzz);
+  \pgfgetlastxy{\nzx}{\nzy};
+
+  % transform the point given by #1
+  \foreach \x/\y/\z in {#1}
+  {   \pgfmathsetmacro{\transformedx}{\x*\newxx+\y*\newyx+\z*\newzx}
+    \pgfmathsetmacro{\transformedy}{\x*\newxy+\y*\newyy+\z*\newzy}
+    \pgfmathsetmacro{\transformedz}{\x*\newxz+\y*\newyz+\z*\newzz}
+    \xdef\savedx{\transformedx}
+    \xdef\savedy{\transformedy}
+    \xdef\savedz{\transformedz}
+  }
+}
+
+\newcommand{\mystateX}[4]{%
+  \draw[] (#1,\stateHeight) circle (\stateSize) node[fitting node] (#2) {};
+  \draw [->] (#2.north) to[out=45,in=0] ($(#2.north)+(0,\stateArcHeight)$) to[out=180,in=135] (#2.north);
+  \uncover<#4>{%
+    \draw[] ($(#2.south)+(0,\rectOffset)-(\rectSize,\rectSize)$) rectangle
+    ($(#2.south)+(0,\rectOffset)+(\rectSize,\rectSize)$) node[fitting node] (#3) {};
+    \draw [->] (#2.south) -- (#3.north);}
+}
+
+\newcommand{\myframe}[4]{%
+  \draw[] ($(#1,\frameYOffset)-(\frameWidth,\frameHeight)$) rectangle
+  ($(#1,\frameYOffset)+(\frameWidth,\frameHeight)$) node[fitting node] (#2) {};
+  \uncover<#4>{\draw[] ($(#2.north)+(0,\frameYOffset)-(\rectSize,\rectSize)$) rectangle
+    ($(#2.north)+(0,\frameYOffset)+(\rectSize,\rectSize)$) node[fitting node] (#3) {};
+    \draw [->] (#2.north) -- (#3.south);}
+}
+
+\makeatletter
+\newcommand\myconnect[2][\\]{%
+  \global\def\my@node{#1}%
+  \my@connect #2,\relax\noexpand\@eolst}
+
+\def\my@connect #1,#2\@eolst{%
+  \draw [->] (\my@node.south) -- (#1.north);
+  \ifx\relax#2\relax
+  #1
+  \else
+  \my@connect #2\@eolst%
+  \fi}
+\makeatother
+
+\newcommand{\systemDiagram}[8]{%
+  % back arrows or decisions #1, object detector decision #2, tracker decision #3
+  \begin{figure}
+    \begin{tikzpicture}
+%      \uncover<#1>{\draw[thick] (0,0) rectangle node[fitting node] (objects) {\\\vspace{-1ex}Objects} (2,1);}
+      \uncover<#2>{\draw[thick] (3,0) rectangle node[fitting node] (tracks) {\\\vspace{-1ex}Tracks} (5,1);}
+      \uncover<#3>{\draw[thick] (6,0) rectangle node[fitting node] (events) {\\\vspace{-1ex}Events} (8,1);}
+      \uncover<#4>{\draw[thick] (9,0) rectangle node[fitting node] (sentences) {\\\vspace{-1ex}Sentences} (11,1);}
+ %     \uncover<#2>{\draw[->,thick] (objects) -- (tracks);}
+      \uncover<#3>{\draw[->,thick] (tracks) -- (events);}
+      \uncover<#4>{\draw[->,thick] (events) -- (sentences);}
+      \uncover<#5>{%
+        % \Alt<#6>{\draw[-,dashed,ultra thick,red] ($(objects.north east)+(0.5,0.3)$) -- ($(objects.south east)+(0.5,-0.3)$);}
+        % {\draw[Green,<-,thick] ($(objects.east)+(0,-0.2)$) -- ($(tracks.west)+(0,-0.2)$);
+        %   \draw[-,dashed,ultra thick,Green] ($(objects.north east)+(0.5,0.3)$) -- ($(objects.south east)+(0.5,-0.3)$);
+        % }
+        \Alt<#7>{\draw[-,dashed,ultra thick,red] ($(tracks.north east)+(0.5,0.3)$) -- ($(tracks.south east)+(0.5,-0.3)$);}
+        {\draw[Green,<-,thick] ($(tracks.east)+(0,-0.2)$) -- ($(events.west)+(0,-0.2)$);
+          % \draw[-,dashed,ultra thick,Green] ($(objects.north east)+(0.5,0.3)$) -- ($(objects.south east)+(0.5,-0.3)$);
+        }
+        \Alt<#8>{\draw[-,dashed,ultra thick,red] ($(events.north east)+(0.5,0.3)$) -- ($(events.south east)+(0.5,-0.3)$);}
+        {\draw[Green,<-,thick] ($(events.east)+(0,-0.2)$) -- ($(sentences.west)+(0,-0.2)$);
+          % \draw[-,dashed,ultra thick,Green] ($(objects.north east)+(0.5,0.3)$) -- ($(objects.south east)+(0.5,-0.3)$);
+        }}
+    \end{tikzpicture}
+  \end{figure}
+}
+
+\newcommand{\randomDetections}{%
+  \draw[black,thick] (0.60,0.41) rectangle (0.69,0.53) node () {};
+  \draw[black,thick] (0.06,0.08) rectangle (0.15,0.20) node () {};
+  \draw[black,thick] (0.08,0.59) rectangle (0.17,0.71) node () {};
+  \draw[black,thick] (0.55,0.02) rectangle (0.64,0.14) node () {};
+  \draw[black,thick] (0.56,0.11) rectangle (0.65,0.23) node () {};
+  \draw[black,thick] (0.03,0.72) rectangle (0.12,0.84) node () {};
+  \draw[black,thick] (0.31,0.20) rectangle (0.40,0.32) node () {};
+  \draw[black,thick] (0.33,0.41) rectangle (0.42,0.53) node () {};
+  \draw[black,thick] (0.64,0.56) rectangle (0.73,0.68) node () {};
+  \draw[black,thick] (0.31,0.56) rectangle (0.40,0.68) node () {};
+  \draw[black,thick] (0.17,0.12) rectangle (0.26,0.24) node () {};
+  \draw[black,thick] (0.13,0.32) rectangle (0.22,0.44) node () {};
+  \draw[black,thick] (0.36,0.31) rectangle (0.45,0.43) node () {};
+  \draw[black,thick] (0.63,0.40) rectangle (0.72,0.52) node () {};
+  \draw[black,thick] (0.40,0.19) rectangle (0.49,0.31) node () {};
+  \draw[black,thick] (0.17,0.61) rectangle (0.26,0.73) node () {};
+  \draw[black,thick] (0.64,0.73) rectangle (0.73,0.85) node () {};
+  \draw[black,thick] (0.50,0.64) rectangle (0.59,0.76) node () {};
+  \draw[black,thick] (0.11,0.06) rectangle (0.20,0.18) node () {};
+  \draw[black,thick] (0.64,0.42) rectangle (0.73,0.54) node () {};
+  \draw[black,thick] (0.11,0.08) rectangle (0.20,0.20) node () {};
+  \draw[black,thick] (0.36,0.76) rectangle (0.45,0.88) node () {};
+  \draw[black,thick] (0.85,0.81) rectangle (0.94,0.93) node () {};
+  \draw[black,thick] (0.64,0.49) rectangle (0.73,0.61) node () {};
+  \draw[black,thick] (0.71,0.27) rectangle (0.80,0.39) node () {};
+  \draw[black,thick] (0.59,0.32) rectangle (0.68,0.44) node () {};
+  \draw[black,thick] (0.37,0.23) rectangle (0.46,0.35) node () {};
+  \draw[black,thick] (0.72,0.47) rectangle (0.81,0.59) node () {};
+  \draw[black,thick] (0.59,0.25) rectangle (0.68,0.37) node () {};
+  \draw[black,thick] (0.08,0.55) rectangle (0.17,0.67) node () {};
+  \draw[black,thick] (0.51,0.62) rectangle (0.60,0.74) node () {};
+  \draw[black,thick] (0.30,0.78) rectangle (0.39,0.90) node () {};
+  \draw[black,thick] (0.61,0.34) rectangle (0.70,0.46) node () {};
+  \draw[black,thick] (0.23,0.70) rectangle (0.32,0.82) node () {};
+  \draw[black,thick] (0.66,0.26) rectangle (0.75,0.38) node () {};
+  \draw[black,thick] (0.12,0.81) rectangle (0.21,0.93) node () {};
+  \draw[black,thick] (0.48,0.46) rectangle (0.57,0.58) node () {};
+  \draw[black,thick] (0.23,0.34) rectangle (0.32,0.46) node () {};
+  \draw[black,thick] (0.40,0.21) rectangle (0.49,0.33) node () {};
+  \draw[black,thick] (0.69,0.60) rectangle (0.78,0.72) node () {};
+  \draw[black,thick] (0.08,0.28) rectangle (0.17,0.40) node () {};
+  \draw[black,thick] (0.51,0.24) rectangle (0.60,0.36) node () {};
+  \draw[black,thick] (0.63,0.55) rectangle (0.72,0.67) node () {};
+  \draw[black,thick] (0.23,0.46) rectangle (0.32,0.58) node () {};
+  \draw[black,thick] (0.41,0.26) rectangle (0.50,0.38) node () {};
+  \draw[black,thick] (0.56,0.03) rectangle (0.65,0.15) node () {};
+  \draw[black,thick] (0.57,0.56) rectangle (0.66,0.68) node () {};
+  \draw[black,thick] (0.81,0.24) rectangle (0.90,0.36) node () {};
+  \draw[black,thick] (0.69,0.20) rectangle (0.78,0.32) node () {};
+  \draw[black,thick] (0.14,0.63) rectangle (0.23,0.75) node () {};
+  \draw[black,thick] (0.57,0.18) rectangle (0.66,0.30) node () {};
+  \draw[black,thick] (0.49,0.82) rectangle (0.58,0.94) node () {};
+  \draw[black,thick] (0.14,0.31) rectangle (0.23,0.43) node () {};
+  \draw[black,thick] (0.47,0.35) rectangle (0.56,0.47) node () {};
+  \draw[black,thick] (0.71,0.10) rectangle (0.80,0.22) node () {};
+  \draw[black,thick] (0.13,0.13) rectangle (0.22,0.25) node () {};
+  \draw[black,thick] (0.82,0.83) rectangle (0.91,0.95) node () {};
+  \draw[black,thick] (0.57,0.18) rectangle (0.66,0.30) node () {};
+  \draw[black,thick] (0.56,0.42) rectangle (0.65,0.54) node () {};
+  \draw[black,thick] (0.36,0.07) rectangle (0.45,0.19) node () {};
+  \draw[black,thick] (0.09,0.58) rectangle (0.18,0.70) node () {};
+  \draw[black,thick] (0.52,0.81) rectangle (0.61,0.93) node () {};
+  \draw[black,thick] (0.77,0.47) rectangle (0.86,0.59) node () {};
+  \draw[black,thick] (0.50,0.06) rectangle (0.59,0.18) node () {};
+  \draw[black,thick] (0.14,0.09) rectangle (0.23,0.21) node () {};
+  \draw[black,thick] (0.25,0.56) rectangle (0.34,0.68) node () {};
+  \draw[black,thick] (0.68,0.50) rectangle (0.77,0.62) node () {};
+  \draw[black,thick] (0.19,0.73) rectangle (0.28,0.85) node () {};
+  \draw[black,thick] (0.58,0.30) rectangle (0.67,0.42) node () {};
+  \draw[black,thick] (0.85,0.14) rectangle (0.94,0.26) node () {};
+  \draw[black,thick] (0.83,0.48) rectangle (0.92,0.60) node () {};
+  \draw[black,thick] (0.40,0.41) rectangle (0.49,0.53) node () {};
+  \draw[black,thick] (0.18,0.58) rectangle (0.27,0.70) node () {};
+  \draw[black,thick] (0.08,0.23) rectangle (0.17,0.35) node () {};
+  \draw[black,thick] (0.51,0.15) rectangle (0.60,0.27) node () {};
+  \draw[black,thick] (0.08,0.58) rectangle (0.17,0.70) node () {};
+}
+
+\tikzset{RPY/.style={x={(\nxx,\nxy)},y={(\nyx,\nyy)},z={(\nzx,\nzy)}}}
+
+\usepackage[outline]{contour}
+
+\makeatletter
+\tikzset{%
+  fitting node/.style={%
+    inner sep=0pt,
+    fill=none,
+    draw=none,
+    reset transform,
+    fit={(\pgf@pathminx,\pgf@pathminy) (\pgf@pathmaxx,\pgf@pathmaxy)}
+  },
+  reset transform/.code={\pgftransformreset}
+}
+
+\newcommand<>\Alt[3][l]{%
+  \begingroup%
+  \providetoggle{Alt@before}%
+  \alt#4{\toggletrue{Alt@before}}{\togglefalse{Alt@before}}%
+  \ifbool{mmode}{%
+    \expandafter\mathpalette%
+    \expandafter\math@Alt%
+  }{%
+    \expandafter\make@Alt%
+  }%
+  {{#1}{#2}{#3}}%
+  \endgroup%
+}
+
+% Un-brace the second argument (required because \mathpalette reads the three arguments as one)
+\newcommand\math@Alt[2]{\math@@Alt{#1}#2}
+
+% Set the two arguments in boxes. The math style is given by #1. \m@th sets \mathsurround to 0.
+\newcommand\math@@Alt[4]{%
+  \setbox\z@ \hbox{$\m@th #1{#3}$}%
+  \setbox\@ne\hbox{$\m@th #1{#4}$}%
+  \@Alt{#2}%
+}
+
+% Un-brace the argument
+\newcommand\make@Alt[1]{\make@@Alt#1}
+
+% Set the two arguments into normal boxes
+\newcommand\make@@Alt[3]{%
+  \sbox\z@ {#2}%
+  \sbox\@ne{#3}%
+  \@Alt{#1}%
+}
+
+% Place one of the two boxes using \rlap and place a \phantom box with the maximum of the two boxes
+\newcommand\@Alt[1]{%
+  \setbox\tw@\null
+  \ht\tw@\ifnum\ht\z@>\ht\@ne\ht\z@\else\ht\@ne\fi
+  \dp\tw@\ifnum\dp\z@>\dp\@ne\dp\z@\else\dp\@ne\fi
+  \wd\tw@\ifnum\wd\z@>\wd\@ne\dimexpr\wd\z@/2\relax\else\dimexpr\wd\@ne/2\relax\fi
+  %
+  \ifstrequal{#1}{l}{%
+    \rlap{\iftoggle{Alt@before}{\usebox\z@}{\usebox\@ne}}%
+    \copy\tw@
+    \box\tw@
+  }{%
+    \ifstrequal{#1}{c}{%
+      \copy\tw@
+      \clap{\iftoggle{Alt@before}{\usebox\z@}{\usebox\@ne}}%
+      \box\tw@
+    }{%
+      \ifstrequal{#1}{r}{%
+        \copy\tw@
+        \box\tw@
+        \llap{\iftoggle{Alt@before}{\usebox\z@}{\usebox\@ne}}%
+      }{%
+      }%
+    }%
+  }%
+}
+
+\makeatother
+
+% Light
+\definecolor{Red}{rgb}{1,0.05,0.05}
+\definecolor{Green}{rgb}{0,0.8,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{LightBlue}{rgb}{0,0.5,1}
+\definecolor{LightRed}{rgb}{1,0.25,0.25}
+\definecolor{VeryLightRed}{rgb}{1,0.4,0.4}
+\definecolor{ExtremelyLightRed}{rgb}{1,0.6,0.6}
+\definecolor{Skin}{rgb}{1,0.71,0.69}
+\definecolor{Grey}{rgb}{0.5,0.5,0.5}
+\definecolor{LightGrey}{rgb}{0.6,0.6,0.6}
+\definecolor{Black}{rgb}{0,0,0}
+\definecolor{White}{rgb}{1,1,1}
+\newcommand{\red}{\color{Red}}
+\newcommand{\green}{\color{Green}}
+\newcommand{\blue}{\color{Blue}}
+\newcommand{\lightBlue}{\color{LightBlue}}
+\newcommand{\lightRed}{\color{LightRed}}
+\newcommand{\veryLightRed}{\color{VeryLightRed}}
+\newcommand{\extremelyLightRed}{\color{ExtremelyLightRed}}
+\newcommand{\skin}{\color{Skin}}
+\newcommand{\redOn}{\only{\red}}
+\newcommand{\lightRedOn}{\only{\lightRed}}
+\newcommand{\veryLightRedOn}{\only{\veryLightRed}}
+\newcommand{\extremelyLightRedOn}{\only{\extremelyLightRed}}
+\newcommand{\greenOn}{\only{\green}}
+\newcommand{\blueOn}{\only{\blue}}
+\newcommand{\lightBlueOn}{\only{\lightBlue}}
+\newcommand{\skinOn}{\only{\skin}}
+\newcommand{\gold}{\color{i6colorscheme6}}
+\newcommand{\goldOn}{\only{\gold}}
+\newcommand{\grey}{\color{Grey}}
+\newcommand{\greyOn}{\only{\grey}}
+\newcommand{\gray}{\color{Grey}}
+\newcommand{\grayOn}{\only{\grey}}
+\newcommand{\lightGrey}{\color{LightGrey}}
+\newcommand{\lightGreyOn}{\only{\lightGrey}}
+\newcommand{\black}{\color{Black}}
+\newcommand{\blackOn}{\only{\black}}
+\newcommand{\orange}{\color{Apricot}}
+\newcommand{\orangeOn}{\only{\orange}}
+\newcommand{\violet}{\color{BlueViolet}}
+\newcommand{\violetOn}{\only{\violet}}
+\newcommand{\white}{\color{White}}
+\newcommand{\whiteOn}{\only{\white}}
+
+% Dark
+% \definecolor{Red}{rgb}{1,0,0}
+% \definecolor{LightRed}{rgb}{0.8,0.2,0.2}
+% \definecolor{Green}{rgb}{0,0.69,0}
+% \definecolor{Blue}{rgb}{0,0,1}
+% \definecolor{LightBlue}{rgb}{0,0.5,1}
+% \definecolor{lightBlue}{rgb}{0,0.5,1}
+% \definecolor{Skin}{rgb}{1,0.71,0.69}
+% \definecolor{Grey}{rgb}{0.5,0.5,0.5}
+% \definecolor{LightGrey}{rgb}{0.6,0.6,0.6}
+% \definecolor{Black}{rgb}{0,0,0}
+% \definecolor{White}{rgb}{1,1,1}
+% \newcommand{\red}{\color{Red}}
+% \newcommand{\green}{\color{Green}}
+% \newcommand{\blue}{\color{Blue}}
+% \newcommand{\lightBlue}{\color{LightBlue}}
+% \newcommand{\lightRed}{\color{LightRed}}
+% \newcommand{\veryLightRed}{\color{VeryLightRed}}
+% \newcommand{\extremelyLightRed}{\color{ExtremelyLightRed}}
+% \newcommand{\skin}{\color{Skin}}
+% \newcommand{\redOn}{\only{\red}}
+% \newcommand{\lightRedOn}{\only{\lightRed}}
+% \newcommand{\veryLightRedOn}{\only{\veryLightRed}}
+% \newcommand{\extremelyLightRedOn}{\only{\extremelyLightRed}}
+% \newcommand{\greenOn}{\only{\green}}
+% \newcommand{\blueOn}{\only{\blue}}
+% \newcommand{\lightBlueOn}{\only{\lightBlue}}
+% \newcommand{\skinOn}{\only{\skin}}
+% \newcommand{\gold}{\color{i6colorscheme6}}
+% \newcommand{\goldOn}{\only{\gold}}
+% \newcommand{\grey}{\color{Grey}}
+% \newcommand{\greyOn}{\only{\grey}}
+% \newcommand{\lightGrey}{\color{LightGrey}}
+% \newcommand{\lightGreyOn}{\only{\lightGrey}}
+% \newcommand{\black}{\color{Black}}
+% \newcommand{\blackOn}{\only{\black}}
+% \newcommand{\orange}{\color{Bittersweet}}
+% \newcommand{\orangeOn}{\only{\orange}}
+% \newcommand{\violet}{\color{BlueViolet}}
+% \newcommand{\violetOn}{\only{\violet}}
+% \newcommand{\white}{\color{White}}
+% \newcommand{\whiteOn}{\only{\white}}
+
+\newcommand<>{\bgOn}[2]{\temporal#3{\colorbox{bg}{#2}}{\colorbox{#1}{#2}}{\colorbox{bg}{#2}}}
+
+% Dark colors if I ever want to revive them again
+%
+% \definecolor{Red}{rgb}{1,0,0}
+% \definecolor{Green}{rgb}{0,0.69,0}
+% \definecolor{Blue}{rgb}{0,0,1}
+% \definecolor{LightBlue}{rgb}{0,0.5,1}
+% \definecolor{LightRed}{rgb}{1,0.2,0.2}
+% \definecolor{VeryLightRed}{rgb}{1,0.4,0.4}
+% \definecolor{ExtremelyLightRed}{rgb}{1,0.6,0.6}
+% \definecolor{Skin}{rgb}{1,0.71,0.69}
+% \definecolor{Grey}{rgb}{0.5,0.5,0.5}
+% \definecolor{LightGrey}{rgb}{0.6,0.6,0.6}
+% \definecolor{Black}{rgb}{0,0,0}
+% \definecolor{White}{rgb}{1,1,1}
+% \newcommand{\red}{\color{Red}}
+% \newcommand{\green}{\color{Green}}
+% \newcommand{\blue}{\color{Blue}}
+% \newcommand{\lightBlue}{\color{LightBlue}}
+% \newcommand{\lightRed}{\color{LightRed}}
+% \newcommand{\veryLightRed}{\color{VeryLightRed}}
+% \newcommand{\extremelyLightRed}{\color{ExtremelyLightRed}}
+% \newcommand{\skin}{\color{Skin}}
+% \newcommand{\redOn}{\only{\red}}
+% \newcommand{\lightRedOn}{\only{\lightRed}}
+% \newcommand{\veryLightRedOn}{\only{\veryLightRed}}
+% \newcommand{\extremelyLightRedOn}{\only{\extremelyLightRed}}
+% \newcommand{\greenOn}{\only{\green}}
+% \newcommand{\blueOn}{\only{\blue}}
+% \newcommand{\lightBlueOn}{\only{\lightBlue}}
+% \newcommand{\skinOn}{\only{\skin}}
+% \newcommand{\gold}{\color{i6colorscheme6}}
+% \newcommand{\goldOn}{\only{\gold}}
+% \newcommand{\grey}{\color{Grey}}
+% \newcommand{\greyOn}{\only{\grey}}
+% \newcommand{\lightGrey}{\color{LightGrey}}
+% \newcommand{\lightGreyOn}{\only{\lightGrey}}
+% \newcommand{\black}{\color{Black}}
+% \newcommand{\blackOn}{\only{\black}}
+% \newcommand{\orange}{\color{Bittersweet}}
+% \newcommand{\orangeOn}{\only{\orange}}
+% \newcommand{\violet}{\color{BlueViolet}}
+% \newcommand{\violetOn}{\only{\violet}}
+% \newcommand{\white}{\color{White}}
+% \newcommand{\whiteOn}{\only{\white}}
+
+% from http://tex.stackexchange.com/questions/9559/drawing-on-an-image-with-tikz
+\newcommand{\tikzgrid}{%
+  \draw[help lines,xstep=.1,ystep=.1] (0,0) grid (1,1);
+  \foreach \x in {0,1,...,9} { \node [anchor=north] at (\x/10,0) {0.\x}; }
+  \foreach \y in {0,1,...,9} { \node [anchor=east] at (0,\y/10) {0.\y}; }}
+\newcommand{\tikzgridfour}{%
+  \draw[help lines,xstep=1,ystep=1] (0,0) grid (4,4);
+  \foreach \x in {0,1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
+  \foreach \y in {0,1,...,4} { \node [anchor=east] at (0,\y) {\y}; }}
+
+\input{figures/hmmtikzlib}
+
+\renewcommand<>{\sout}[1]{\alt#2{\beameroriginal{\sout}{#1}}{#1}}
+
+% \usetheme{CambridgeUS}
+% \usetheme{cbmm}
+\usetheme{Madrid}
+% \usetheme{default}
+% \useoutertheme{cbmm}
+% \usefonttheme{serif}
+
+% % I like the the other theme more
+% % \usetheme{CambridgeUS}
+% \usetheme{Madrid}
+% \useoutertheme{slidenum}
+\useoutertheme{noslidenum}
+% \usefonttheme{serif}
+
+\newcommand{\bgbox}[1]{\colorbox{white}{#1}}
+% \usecolortheme{purdue}
+% \usecolortheme{cbmm}
+% \usecolortheme{mule}
+
+% \newcommand{\bgbox}[1]{\colorbox{white}{#1}}
+\usecolortheme{mit}
+% % For dark colors
+% %\usecolortheme{mule}
+
+\makeatletter
+\NewDocumentCommand{\sotwo}{O{red}O{black}+m}
+{%
+  \begingroup
+  \setulcolor{#1}%
+  \setul{-.5ex}{.4pt}%
+  \def\SOUL@uleverysyllable{%
+    \rlap{%
+      \color{#2}\the\SOUL@syllable
+      \SOUL@setkern\SOUL@charkern}%
+    \SOUL@ulunderline{%
+      \phantom{\the\SOUL@syllable}}%
+  }%
+  \ul{#3}%
+  \endgroup
+}
+\makeatother
+
+\graphicspath{{game-learning/videos}{game-learning/}{ll/images}{ll/}{images/}{videos/}{figures/}{people/}}
+\DeclareGraphicsExtensions{.jpg,.png,.pdf}
+
+\newcommand\redsout{\bgroup\markoverwith{\textcolor{red}{\rule[0.5ex]{2pt}{0.6pt}}}\ULon}
+
+\tikzset{
+    between/.style args={#1 and #2}{
+         at = ($(#1)!0.5!(#2)$)
+    }
+}
+\tikzset{
+    between base/.style args={#1 and #2}{
+        between=#1.base and #2.base
+    }
+}
+
+\newcommand<>{\uncoverubrace}[2]{%
+  \onslide#3 \underbrace{ \onslide<1->%
+  #1%
+  \onslide#3 }_{#2} \onslide<1->%
+}
+\newcommand<>{\uncoverobrace}[2]{%
+  \onslide#3 \overbrace{ \onslide<1->%
+  #1%
+  \onslide#3 }^{#2} \onslide<1->%
+}
+
+\newcommand<>{\hl}[2]{%
+  {\Alt#3{\mathchoice%
+  {\colorbox{#1}{$\displaystyle#2$}}%
+  {\colorbox{#1}{$\textstyle#2$}}%
+  {\colorbox{#1}{$\scriptstyle#2$}}%
+  {\colorbox{#1}{$\scriptscriptstyle#2$}}}{#2}}}
+
+\newcommand<>{\hlnarrow}[2]{%
+  \setlength\fboxsep{0pt}%
+  {\Alt#3{\mathchoice%
+  {\colorbox{#1}{$\displaystyle#2$}}%
+  {\colorbox{#1}{$\textstyle#2$}}%
+  {\colorbox{#1}{$\scriptstyle#2$}}%
+  {\colorbox{#1}{$\scriptscriptstyle#2$}}}{#2}}}
+
+\usepackage{cmbright}
+
+\setbeamertemplate{frametitle}
+{
+  \vspace{1ex}
+  \contourlength{0.05pt}
+  \contournumber{5}
+  \contour{mitred}{\insertframetitle}
+  \vspace{1ex}
+  % \insertframetitle
+}
