@@ -1,7 +1,7 @@
 \documentclass[usenames,dvipsnames,svgnames,table,unknownkeysallowed]{beamer}
 \usepackage{etex}
 \usepackage{times}
-\usepackage{graphicx}
+% \usepackage{graphicx}
 \usepackage{multimedia}
 \usepackage{amsmath}
 \usepackage{tikz}
@@ -37,6 +37,9 @@
 \usepackage{xparse}
 \usepackage{enumitem}
 \usepackage[skins]{tcolorbox}
+\usepackage{nicefrac}
+\usepackage{graphbox}
+\usepackage[super]{nth}
 
 \newcommand{\TODO}{{\red TODO}\xspace}
 
@@ -486,6 +489,53 @@
 
 \makeatother
 
+\newcommand<>{\bgOn}[2]{\temporal#3{\colorbox{bg}{#2}}{\colorbox{#1}{#2}}{\colorbox{bg}{#2}}}
+
+\ifdefined\darkmode
+% Dark
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Green}{rgb}{0,0.69,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{LightBlue}{rgb}{0,0.5,1}
+\definecolor{LightRed}{rgb}{1,0.2,0.2}
+\definecolor{VeryLightRed}{rgb}{1,0.4,0.4}
+\definecolor{ExtremelyLightRed}{rgb}{1,0.6,0.6}
+\definecolor{Skin}{rgb}{1,0.71,0.69}
+\definecolor{Grey}{rgb}{0.5,0.5,0.5}
+\definecolor{LightGrey}{rgb}{0.6,0.6,0.6}
+\definecolor{Black}{rgb}{0,0,0}
+\definecolor{White}{rgb}{1,1,1}
+\newcommand{\red}{\color{Red}}
+\newcommand{\green}{\color{Green}}
+\newcommand{\blue}{\color{Blue}}
+\newcommand{\lightBlue}{\color{LightBlue}}
+\newcommand{\lightRed}{\color{LightRed}}
+\newcommand{\veryLightRed}{\color{VeryLightRed}}
+\newcommand{\extremelyLightRed}{\color{ExtremelyLightRed}}
+\newcommand{\skin}{\color{Skin}}
+\newcommand{\redOn}{\only{\red}}
+\newcommand{\lightRedOn}{\only{\lightRed}}
+\newcommand{\veryLightRedOn}{\only{\veryLightRed}}
+\newcommand{\extremelyLightRedOn}{\only{\extremelyLightRed}}
+\newcommand{\greenOn}{\only{\green}}
+\newcommand{\blueOn}{\only{\blue}}
+\newcommand{\lightBlueOn}{\only{\lightBlue}}
+\newcommand{\skinOn}{\only{\skin}}
+\newcommand{\gold}{\color{i6colorscheme6}}
+\newcommand{\goldOn}{\only{\gold}}
+\newcommand{\grey}{\color{Grey}}
+\newcommand{\greyOn}{\only{\grey}}
+\newcommand{\lightGrey}{\color{LightGrey}}
+\newcommand{\lightGreyOn}{\only{\lightGrey}}
+\newcommand{\black}{\color{Black}}
+\newcommand{\blackOn}{\only{\black}}
+\newcommand{\orange}{\color{Bittersweet}}
+\newcommand{\orangeOn}{\only{\orange}}
+\newcommand{\violet}{\color{BlueViolet}}
+\newcommand{\violetOn}{\only{\violet}}
+\newcommand{\white}{\color{White}}
+\newcommand{\whiteOn}{\only{\white}}
+\else
 % Light
 \definecolor{Red}{rgb}{1,0.05,0.05}
 \definecolor{Green}{rgb}{0,0.8,0}
@@ -531,6 +581,7 @@
 \newcommand{\violetOn}{\only{\violet}}
 \newcommand{\white}{\color{White}}
 \newcommand{\whiteOn}{\only{\white}}
+\fi
 
 % Dark
 % \definecolor{Red}{rgb}{1,0,0}
@@ -575,52 +626,8 @@
 % \newcommand{\white}{\color{White}}
 % \newcommand{\whiteOn}{\only{\white}}
 
-\newcommand<>{\bgOn}[2]{\temporal#3{\colorbox{bg}{#2}}{\colorbox{#1}{#2}}{\colorbox{bg}{#2}}}
-
 % Dark colors if I ever want to revive them again
 %
-% \definecolor{Red}{rgb}{1,0,0}
-% \definecolor{Green}{rgb}{0,0.69,0}
-% \definecolor{Blue}{rgb}{0,0,1}
-% \definecolor{LightBlue}{rgb}{0,0.5,1}
-% \definecolor{LightRed}{rgb}{1,0.2,0.2}
-% \definecolor{VeryLightRed}{rgb}{1,0.4,0.4}
-% \definecolor{ExtremelyLightRed}{rgb}{1,0.6,0.6}
-% \definecolor{Skin}{rgb}{1,0.71,0.69}
-% \definecolor{Grey}{rgb}{0.5,0.5,0.5}
-% \definecolor{LightGrey}{rgb}{0.6,0.6,0.6}
-% \definecolor{Black}{rgb}{0,0,0}
-% \definecolor{White}{rgb}{1,1,1}
-% \newcommand{\red}{\color{Red}}
-% \newcommand{\green}{\color{Green}}
-% \newcommand{\blue}{\color{Blue}}
-% \newcommand{\lightBlue}{\color{LightBlue}}
-% \newcommand{\lightRed}{\color{LightRed}}
-% \newcommand{\veryLightRed}{\color{VeryLightRed}}
-% \newcommand{\extremelyLightRed}{\color{ExtremelyLightRed}}
-% \newcommand{\skin}{\color{Skin}}
-% \newcommand{\redOn}{\only{\red}}
-% \newcommand{\lightRedOn}{\only{\lightRed}}
-% \newcommand{\veryLightRedOn}{\only{\veryLightRed}}
-% \newcommand{\extremelyLightRedOn}{\only{\extremelyLightRed}}
-% \newcommand{\greenOn}{\only{\green}}
-% \newcommand{\blueOn}{\only{\blue}}
-% \newcommand{\lightBlueOn}{\only{\lightBlue}}
-% \newcommand{\skinOn}{\only{\skin}}
-% \newcommand{\gold}{\color{i6colorscheme6}}
-% \newcommand{\goldOn}{\only{\gold}}
-% \newcommand{\grey}{\color{Grey}}
-% \newcommand{\greyOn}{\only{\grey}}
-% \newcommand{\lightGrey}{\color{LightGrey}}
-% \newcommand{\lightGreyOn}{\only{\lightGrey}}
-% \newcommand{\black}{\color{Black}}
-% \newcommand{\blackOn}{\only{\black}}
-% \newcommand{\orange}{\color{Bittersweet}}
-% \newcommand{\orangeOn}{\only{\orange}}
-% \newcommand{\violet}{\color{BlueViolet}}
-% \newcommand{\violetOn}{\only{\violet}}
-% \newcommand{\white}{\color{White}}
-% \newcommand{\whiteOn}{\only{\white}}
 
 % from http://tex.stackexchange.com/questions/9559/drawing-on-an-image-with-tikz
 \newcommand{\tikzgrid}{%
@@ -632,33 +639,22 @@
   \foreach \x in {0,1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
   \foreach \y in {0,1,...,4} { \node [anchor=east] at (0,\y) {\y}; }}
 
-\input{figures/hmmtikzlib}
+% \input{figures/hmmtikzlib}
 
 \renewcommand<>{\sout}[1]{\alt#2{\beameroriginal{\sout}{#1}}{#1}}
 
-% \usetheme{CambridgeUS}
-% \usetheme{cbmm}
 \usetheme{Madrid}
-% \usetheme{default}
-% \useoutertheme{cbmm}
-% \usefonttheme{serif}
 
-% % I like the the other theme more
-% % \usetheme{CambridgeUS}
-% \usetheme{Madrid}
-% \useoutertheme{slidenum}
 \useoutertheme{noslidenum}
-% \usefonttheme{serif}
 
 \newcommand{\bgbox}[1]{\colorbox{white}{#1}}
-% \usecolortheme{purdue}
-% \usecolortheme{cbmm}
-% \usecolortheme{mule}
 
-% \newcommand{\bgbox}[1]{\colorbox{white}{#1}}
+\ifdefined\darkmode
+% For dark colors
+\usecolortheme{mule}
+\else
 \usecolortheme{mit}
-% % For dark colors
-% %\usecolortheme{mule}
+\fi
 
 \makeatletter
 \NewDocumentCommand{\sotwo}{O{red}O{black}+m}
