@@ -1,0 +1,52 @@
+
+\definecolor{pinegreen}{cmyk}{0.92,0,0.59,0.25}
+\definecolor{royalblue}{cmyk}{1,0.50,0,0}
+\tikzstyle{cblue}=[circle, draw, thin,fill=cyan!20, scale=0.8]
+\tikzstyle{obs}=[circle, draw, thin,fill=gray!20, scale=0.8]
+\tikzstyle{qgre}=[circle, draw, scale=0.8]
+\tikzstyle{rpath}=[thick, black, opacity=0.4]
+
+\tikzstyle{pathnode}=[circle, draw, scale=0.04]
+\tikzstyle{graphnode}=[circle, draw, scale=0.14, line width=0.05ex]
+\tikzstyle{graphedge}=[-{Latex[black,length=0.15ex,width=0.15ex]}, shorten >= 0.04ex, ultra thin]
+\tikzstyle{graphdashed}=[dash pattern=on 0.2pt off 0.1pt]
+
+\newcommand{\bugtrap}%
+{
+  \draw[ultra thin, purple] (0,0,0)--(0,1,0) (0,1,0)--(1,1,0) (1,1,0)--(1,0,0) (1,0,0)--(0,0,0);
+  \coordinate (a) at (0.25,0.25,0);
+  \coordinate (b) at ($(a)+(0.21,0,0)$); % inner wall
+  \coordinate (c) at ($(b)+(0,0.25,0)$);
+  \coordinate (d) at ($(a)+(0,0.5,0)$); % top
+  \coordinate (e) at ($(d)+(0.5,0,0)$); % side
+  \coordinate (f) at ($(e)+(0,-0.5,0)$); % side
+  \coordinate (g) at ($(f)+(-0.21,0,0)$); % inner wall
+  \coordinate (h) at ($(g)+(0,0.25,0)$);
+  \draw[ultra thin, purple] (a)--(b) (b)--(c) (d)--(a) (d)--(e) (e)--(f) (f)--(g) (g)--(h);
+}
+
+\newcommand{\plannerrnn}[4]%
+{
+  \node[graphnode, above=1 of start, xshift=-10ex, xshift=#2, yshift=0ex, yshift=#3, #4] (gstartX#1) {};
+  \node[graphnode, above=1 of n1, xshift=-1ex, xshift=#2, yshift=0ex, yshift=#3, #4] (gn1X#1) {};
+  \node[graphnode, above=1 of n2, xshift= 1ex, xshift=#2, yshift=5ex, yshift=#3, #4] (gn2X#1) {};
+  \node[graphnode, above=1 of n3, xshift=-1ex, xshift=#2, yshift=-5ex, yshift=#3, #4] (gn3X#1) {};
+  \node[graphnode, above=1 of n4, xshift=2ex, xshift=#2, yshift=0ex, yshift=#3, #4] (gn4X#1) {};
+  \node[graphnode, above=1 of n5, xshift=8ex, xshift=#2, yshift=5ex, yshift=#3, #4] (gn5X#1) {};
+  \node[graphnode, above=1 of n6, xshift=10ex, xshift=#2, yshift=-5ex, yshift=#3, #4] (gn6X#1) {};
+
+  \draw[graphedge, graphdashed] (gstartX#1) -- (start);
+  \draw[graphedge, graphdashed] (gn1X#1) -- (n1);
+  \draw[graphedge, graphdashed] (gn2X#1) -- (n2);
+  \draw[graphedge, graphdashed] (gn3X#1) -- (n3);
+  \draw[graphedge, graphdashed] (gn4X#1) -- (n4);
+  \draw[graphedge, graphdashed] (gn5X#1) -- (n5);
+  \draw[graphedge, graphdashed] (gn6X#1) -- (n6);
+  \draw[graphedge, graphdashed] (gn6X#1) -- (n7);
+  \draw[graphedge] (gstartX#1) -- (gn1X#1);
+  \draw[graphedge] (gstartX#1) -- (gn2X#1);
+  \draw[graphedge] (gn1X#1) -- (gn3X#1);
+  \draw[graphedge] (gn1X#1) -- (gn4X#1);
+  \draw[graphedge] (gn4X#1) -- (gn5X#1);
+  \draw[graphedge] (gn4X#1) -- (gn6X#1);
+}

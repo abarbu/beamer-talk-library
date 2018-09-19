@@ -1,0 +1,119 @@
+\documentclass[final,t]{beamer}
+\mode<presentation>
+\usetheme{Misc}
+\usepackage{tikz}
+\usepackage{qtree}
+\usepackage[export]{adjustbox}
+
+\usetikzlibrary{calc}
+\usetikzlibrary{fit}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.multipart}
+\usetikzlibrary{bayesnet}
+
+\setbeamerfont{itemize}{size=\normalsize}
+\setbeamerfont{itemize/enumerate body}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
+\graphicspath{{../images/}{../generation-examples/}{../images/foa-examples/}{../}{../images/}{../../hands/accv2018/images/}{../../hands/accv2018/object-images/}{../../hands/accv2018/quads/}{images/}{generation-examples/}{images/foa-examples/}{../}{../images/}{../../hands/accv2018/images/}{../../hands/accv2018/object-images/}{../../hands/accv2018/quads/}}
+
+\usepackage{times}
+\usepackage{xcolor}
+\usepackage{color}
+\usepackage{amsmath,amsthm, amssymb, latexsym}
+\usepackage{exscale}
+\usepackage{booktabs, array}
+\newenvironment{lisp}{\begin{tt}\begin{tabular}[t]{l}}{\end{tabular}\end{tt}}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+% \usepackage[orientation=landscape,size=custom,width=135.46667,height=101.6,scale=1.5]{beamerposter}
+\usepackage[orientation=landscape,size=custom,width=121.92,height=91.44,scale=1.34]{beamerposter}
+\listfiles
+\usepackage{xparse}
+\usepackage{soul}
+\usepackage{cancel}
+\usepackage[bbgreekl]{mathbbol}
+
+\newcommand<>{\hl}[2]{\mathchoice%
+  {\colorbox{#1}{$\displaystyle#2$}}%
+  {\colorbox{#1}{$\textstyle#2$}}%
+  {\colorbox{#1}{$\scriptstyle#2$}}%
+  {\colorbox{#1}{$\scriptscriptstyle#2$}}}
+
+
+
+\usepackage{xspace}
+\makeatletter
+\DeclareRobustCommand\onedot{\futurelet\@let@token\@onedot}
+\newcommand{\theset}[1]{\{#1\}}
+\newcommand{\thebigset}[1]{\left\{#1\right\}}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+\DeclareMathOperator*{\argmin}{argmin}
+\DeclareMathOperator*{\argmax}{argmax}
+\def\@onedot{\ifx\@let@token.\else.\null\fi\xspace}
+\def\eg{{e.g}\onedot} \def\Eg{{E.g}\onedot}
+\def\ie{{i.e}\onedot} \def\Ie{{I.e}\onedot}
+\def\cf{{c.f}\onedot} \def\Cf{{C.f}\onedot}
+\def\etc{{etc}\onedot}
+\def\vs{{vs}\onedot}
+\def\wrt{w.r.t\onedot}
+\def\dof{d.o.f\onedot}
+\def\etal{{et al}\onedot}
+\makeatother
+
+\definecolor{Red}{rgb}{1,0,0}
+\definecolor{Green}{rgb}{0,0.69,0}
+\definecolor{Blue}{rgb}{0,0,1}
+\definecolor{LightBlue}{rgb}{0,0.5,1}
+\definecolor{lightBlue}{rgb}{0,0.5,1}
+\definecolor{LightRed}{rgb}{1,0.25,0.25}
+\definecolor{VeryLightRed}{rgb}{1,0.4,0.4}
+\definecolor{ExtremelyLightRed}{rgb}{1,0.6,0.6}
+\definecolor{Skin}{rgb}{1,0.71,0.69}
+\definecolor{Grey}{rgb}{0.5,0.5,0.5}
+\definecolor{Black}{rgb}{0,0,0}
+\newcommand{\red}{\color{Red}}
+\newcommand{\green}{\color{Green}}
+\newcommand{\blue}{\color{Blue}}
+\newcommand{\lightBlue}{\color{LightBlue}}
+\newcommand{\lightRed}{\color{LightRed}}
+\newcommand{\veryLightRed}{\color{VeryLightRed}}
+\newcommand{\extremelyLightRed}{\color{ExtremelyLightRed}}
+\newcommand{\skin}{\color{Skin}}
+\newcommand{\redOn}{\only{\red}}
+\newcommand{\greenOn}{\only{\green}}
+\newcommand{\blueOn}{\only{\blue}}
+\newcommand{\lightBlueOn}{\only{\lightBlue}}
+\newcommand{\skinOn}{\only{\skin}}
+\newcommand{\gold}{\color{i6colorscheme6}}
+\newcommand{\goldOn}{\only{\gold}}
+\newcommand{\grey}{\color{Grey}}
+\newcommand{\greyOn}{\only{\grey}}
+\newcommand{\black}{\color{Black}}
+\newcommand{\blackOn}{\only{\black}}
+\newcommand{\orange}{\color{Apricot}}
+\newcommand{\orangeOn}{\only{\orange}}
+\newcommand{\violet}{\color{BlueViolet}}
+\newcommand{\violetOn}{\only{\violet}}
+\newcommand{\white}{\color{White}}
+\newcommand{\whiteOn}{\only{\white}}
+
+\NewDocumentCommand\placeholder{mmo}{
+  \framebox{
+    \begin{minipage}[c][#2]{#1}
+      \centering
+      \IfNoValueTF{#3}{Placeholder}{#3}
+    \end{minipage}
+  }
+}
+\newcommand\Task[6]{%
+  \vphantom{$\displaystyle\int_{\blue v}$}%
+  #4&%
+  #5&%
+  \begin{tiny}#6\end{tiny}%
+  \\%
+}
+
+\newcommand\V[1]{{\green{#1}}}
+\newcommand\pr[1]{{\lightBlue{\textbf{#1}}}}

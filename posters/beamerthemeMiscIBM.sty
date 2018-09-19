@@ -1,0 +1,192 @@
+\ProvidesPackage{beamerthemePurdue}
+
+\selectcolormodel{rgb}
+\mode<presentation>
+
+% custom colors
+% http://www.colorsontheweb.com/colorwizard.asp#wizard, used start set: #535967
+% 535967 (mittel)
+% 0e0f12 (schwarz)
+% a0a5b2 (hell)
+% 5d5d5d (gray)
+% cd995d (orange, hell)
+% F79C32 (orange, mittel)
+% FF7e00 (orange, stark)
+% FFBD00 (orange, gelblich)
+
+\definecolor{i6colorscheme1}{HTML}{FFFFFF}  %  e.g. for headline background
+\definecolor{i6colorscheme2}{HTML}{FFFFFF}  %  e.g. title in headline
+\definecolor{i6colorscheme3}{HTML}{FFFFFF}  %  e.g. for poster background
+\definecolor{i6colorscheme4}{HTML}{F3F3F3}  %  e.g. for block background
+\definecolor{i6colorscheme5}{HTML}{A24453}  %  e.g. title in headline, separation lines
+\definecolor{i6colorscheme6}{HTML}{D5973D}  %  e.g. for alert
+
+% headline colors and fonts
+\setbeamercolor{headline}{fg=black,bg=i6colorscheme1}
+\setbeamercolor{title in headline}{fg=i6colorscheme5}
+\setbeamercolor{author in headline}{fg=black}
+\setbeamercolor{institute in headline}{fg=i6colorscheme3}
+\setbeamercolor{logo in headline}{fg=black,bg=i6colorscheme3}
+
+% lines
+%\setbeamercolor{upper separation line head}{fg=ta2orange}
+% \setbeamercolor{separation line}{bg=i6colorscheme5}
+
+% % footline colors and fonts
+\setbeamercolor{footline}{fg=black,bg=i6colorscheme1}
+%\setbeamerfont{footline}{fg=black,size=\normalsize}
+\setbeamerfont{footline}{size=\normalsize}
+
+% poster background, body colors, and fonts
+\setbeamercolor*{normal text}{fg=black,bg=i6colorscheme3}
+
+% block environment
+\setbeamercolor*{block body}{bg=i6colorscheme4,fg=black}
+\setbeamercolor*{block title}{fg=i6colorscheme5,bg=i6colorscheme1}
+% \setbeamerfont{block title}{size=\large,series=\bf}
+\setbeamerfont{block title}{size=\large,series=\bf}
+
+% example environment
+\setbeamercolor*{example title}{fg=black,bg=i6colorscheme1}
+% \setbeamerfont{example title}{size=\large,series=\bf,bg=i6colorscheme1,fg=black}
+\setbeamerfont{example title}{size=\large,series=\bf}
+
+\setbeamercolor*{example body}{fg=black,bg=i6colorscheme4}
+\setbeamercolor*{example title}{fg=black,bg=i6colorscheme1}
+
+%  \setbeamercolor{framesubtitle}{fg=ta3orange, bg=ta2gray}
+%  \setbeamercolor{author in head/foot}{fg=tabutter, bg=black}
+%  \setbeamercolor{title in head/foot}{bg=tabutter, fg=black}
+
+\setbeamercolor{alerted text}{fg=i6colorscheme6}
+
+%\setbeamercolor{example text}{fg=taorange}
+%\setbeamercolor{structure}{fg=ta3skyblue}
+
+\setbeamertemplate{itemize items}{}
+\setbeamertemplate{navigation symbols}{}
+
+\setbeamertemplate{block begin}{
+  \vskip.75ex
+  \begin{beamercolorbox}[ht=3.5ex,dp=0.5ex,center,rounded=false,shadow=false,leftskip=1cm,colsep*=.75ex]{block title}%
+    \usebeamerfont*{block title}\insertblocktitle
+  \end{beamercolorbox}%
+  {\ifbeamercolorempty[bg]{block body}{}{\vskip-0.5pt}}%
+  \usebeamerfont{block body}%
+  \begin{beamercolorbox}[rounded=false,shadow=false,leftskip=1cm,colsep*=.75ex,sep=2ex,vmode]{block body}%
+    \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+  }
+  \setbeamertemplate{block end}{
+    \vskip-1.2ex
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{headline}{
+  \leavevmode
+
+  \begin{beamercolorbox}[wd=\paperwidth]{headline}
+    \begin{columns}[T]
+      \begin{column}{.02\paperwidth}
+        \vskip10ex
+      \end{column}
+      \begin{column}{.07\paperwidth}
+        \vspace{7ex}
+        \raisebox{3ex}{\includegraphics[width=1.0\textwidth]{MIT_logo}}
+      \end{column}
+      \begin{column}{.01\paperwidth}
+      \end{column}
+      \begin{column}{.08\paperwidth}
+        \vspace{7ex}
+        \includegraphics[width=1.0\textwidth]{cbmm-logo}
+      \end{column}
+      \begin{column}{.01\paperwidth}
+      \end{column}
+      \begin{column}{.07\paperwidth}
+        \vspace{10ex}
+        \includegraphics[width=1.0\textwidth]{ibm-logo}
+      \end{column}
+      \begin{column}{.02\paperwidth}
+      \end{column}
+      \begin{column}{.70\paperwidth}
+        \hskip2ex
+        \vskip8ex
+        %% \raggedright
+        %% \centering
+        %% \usebeamercolor{title in headline}{\color{fg}\textbf{\Large{\inserttitle}\\[1.5ex]}}
+        %% \usebeamercolor{author in headline}{\color{fg}{\Large{\insertauthor}\\[1.5ex]}}
+        %% \usebeamercolor{institute in headline}{\color{fg}{\Large{\insertinstitute}\\[1ex]\ }}
+        \usebeamercolor{title in headline}{\color{fg}\textbf{\Large{\inserttitle}\\[1.5ex]}}
+        \usebeamercolor{author in headline}{\color{fg}{\Large{\insertauthor}\\[0.5ex]}}
+        \usebeamercolor{institute in headline}{\color{fg}{\Large{\insertinstitute}\\[1ex]\ }}
+      \end{column}
+      % \begin{column}{.0.2\paperwidth}
+      %   \rule{1pt}{2pt}
+      % \end{column}
+    \end{columns}
+  \end{beamercolorbox}
+  \vspace{-5ex}
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{footline}{
+  \begin{beamercolorbox}[wd=\paperwidth]{upper separation line foot}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+
+  \leavevmode%
+  %% \begin{beamercolorbox}[ht=4ex,leftskip=1cm,rightskip=1cm]{footline}%
+  \begin{beamercolorbox}[]{footline}%
+    %% \hfill
+    \begin{columns}[T]
+      \begin{column}{.022\paperwidth}
+	\hfill
+      \end{column}
+      \begin{column}{.30\paperwidth}
+	\vskip2ex
+	\tiny{
+This research was supported by the Toyota Research Initiative and the Center for Brains, Minds and Machines, funded by NSF
+STC award CCF-1231216.
+%
+The views and conclusions contained in this document are those of the
+authors and do not represent the official policies, either express or
+implied, of the U.S. Government.
+%
+The U.S. Government is authorized to reproduce and distribute reprints for
+Government purposes, notwithstanding any copyright notation herein.}
+      \end{column}
+      \begin{column}{.04\paperwidth}
+	\hfill
+      \end{column}
+      \begin{column}{.558\paperwidth}
+	\vskip3.5ex
+	\vspace*{\fill}
+	% \url{URL}
+        \hfill
+	\texttt{\emails}
+	\vspace*{\fill}
+      \end{column}
+      \begin{column}{.08\paperwidth}
+	\hfill
+      \end{column}
+    \end{columns}
+    \vskip1ex
+  %%   \hfill
+  %%   \url{}
+  %%   \hfill
+  %%   \texttt{}
+  %%   \vskip1ex
+  \end{beamercolorbox}
+  \vskip0pt%
+  \begin{beamercolorbox}[wd=\paperwidth]{lower separation line foot}
+    \rule{0pt}{2pt}
+  \end{beamercolorbox}
+}
+
+\mode<all>
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: "poster"
+%%% End:

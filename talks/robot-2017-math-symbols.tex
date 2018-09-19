@@ -1,0 +1,201 @@
+
+%%%%%%%%%%%%%%% MATH SYMBOLS USED %%%%%%%%%%%%%%%%%%
+
+% \NewDocumentCommand\placeholder{mmo}{
+%   \framebox{
+%     \begin{minipage}[c][#2]{#1}
+%       \centering
+%       \IfNoValueTF{#3}{Placeholder}{#3}
+%     \end{minipage}
+%   }
+% }
+
+% Trajectory. Renamed to Control.
+\NewDocumentCommand\Trajectory{}{ \mu_{t}(t) }
+%\NewDocumentCommand\Trajectory{}{ X_{t}(t') }
+
+% Control
+%\NewDocumentCommand\Control{}{ \mu_{t}(t') }
+\NewDocumentCommand\Control{}{ \mu_{t} }
+\NewDocumentCommand\ControlInitial{}{ \mu_{t}(t'_{i}) }
+\NewDocumentCommand\ControlFinal{}{ \mu_{t}(t'_{f}) }
+
+% Action
+\NewDocumentCommand\Action{m}{%
+        \IfNoValueTF{#1}
+        { p }
+        { p_{#1} }
+}
+
+
+% Knowledge Base 
+\NewDocumentCommand\KB{m}{%
+        \IfNoValueTF{#1}
+        { k }
+        { k_{#1} }
+}
+
+% Persistent World Model
+\NewDocumentCommand\PersistentWorldModel{m}{%
+        \IfNoValueTF{#1}
+        { \omega }
+        { \omega_{#1} }
+}
+
+
+% Language
+\NewDocumentCommand\Language{m}{%
+        \IfNoValueTF{#1}
+        { s }
+        { s_{#1} }
+}
+
+% Grounding
+\NewDocumentCommand\Grounding{m}{%
+        \IfNoValueTF{#1}
+        { L }
+        { L_{#1} }
+}
+
+% Gnd variable
+\NewDocumentCommand\GV{m}{%
+        \IfNoValueTF{#1}
+        { \gamma }
+        { \gamma_{#1} }
+}
+
+%% Phrase
+\NewDocumentCommand\Phrase{m}{%
+        \IfNoValueTF{#1}
+        { \lambda }
+        { \lambda_{#1} }
+}
+%\NewDocumentCommand\Phrase{oo}{%
+%    \IfNoValueTF{#2}
+%    {
+%        \IfNoValueTF{#1}
+%        {\lambda}
+%        {\lambda_{#1}}
+%    }
+%    { \lambda_{#1}^{#2} }
+%}
+
+% Observations
+\NewDocumentCommand\VisualObservations{m}{%
+        \IfNoValueTF{#1}
+        {v}
+        {v_{#1}}
+}
+
+% Visual Observation
+\NewDocumentCommand\VisualObservation{oo}{%
+    \IfNoValueTF{#2}
+    {
+        \IfNoValueTF{#1}
+        {z}
+        {z^{#1}}
+    }
+    { z^{#1}_{#2} }
+}
+
+% Correspondences - single argument
+\NewDocumentCommand\Correspondences{m}{%
+        \IfNoValueTF{#1}
+        {\text{Tr}}
+        {\text{Tr}_{#1}}
+}
+
+% Correspondence variable 
+\NewDocumentCommand\CV{m}{%
+        \IfNoValueTF{#1}
+        {\phi}
+        {\phi_{#1}}
+}
+%\NewDocumentCommand\CV{oo}{%
+%    \IfNoValueTF{#2}
+%    {
+%        \IfNoValueTF{#1}
+%        {\phi}
+%        {\phi_{#1}}
+%    }
+%    { \phi_{#1}^{#2} }
+%}
+
+% World Model 
+\NewDocumentCommand\WorldModel{m}{%
+        \IfNoValueTF{#1}
+        {\Upsilon}
+        {\Upsilon_{#1}}
+}
+
+% Tracker Full State
+\NewDocumentCommand\TrackerFullState{m}{%
+        \IfNoValueTF{#1}
+        {\mathbb{S}}
+        {\mathbb{S}_{#1}}
+}
+
+% Tracker Factored State 
+\NewDocumentCommand\Tracker{oo}{%
+    \IfNoValueTF{#2}
+    {
+        \IfNoValueTF{#1}
+        {S}
+        {S^{#1}}
+    }
+    { S^{#1}_{#2} }
+}
+
+% Tracker Full State
+\NewDocumentCommand\GroundingFullState{m}{%
+        \IfNoValueTF{#1}
+        {\mathcal{G}}
+        {\mathcal{G}_{#1}}
+}
+
+% Tracker Factored State 
+\NewDocumentCommand\GroundingFactored{oo}{%
+    \IfNoValueTF{#2}
+    {
+        \IfNoValueTF{#1}
+        {\Gamma}
+        {\Gamma^{#1}}
+    }
+    { \Gamma^{#1}_{#2} }
+}
+
+% Declarative
+\NewDocumentCommand\Dec{m}{ #1^{\delta} }
+
+% Imperative 
+%\NewDocumentCommand\Imp{m}{ #1^{\eta} }
+\NewDocumentCommand\Imp{m}{ #1^{\pi} }
+
+% Perceptual
+\NewDocumentCommand\Per{m}{ #1^{\mathcal{P}} }
+
+% Factual
+\NewDocumentCommand\Fact{m}{ #1^{\mathcal{F}} }
+
+% Belief
+\NewDocumentCommand\Belief{m}{ \emph{bel}(#1) }
+
+% Integral
+\NewDocumentCommand\Integral{m}{ \int_{#1} }
+
+% Sum 
+\NewDocumentCommand\Sum{m}{ \sum_{#1} }
+
+% Integral
+\NewDocumentCommand\Size{m}{ \lvert {#1} \rvert }
+
+%% CONSTANTS
+% Num_trackers 
+\NewDocumentCommand\NumTrackers{}{ n_{\mathcal{O}} }
+% Num detections
+\NewDocumentCommand\NumDetections{}{ n_{t} }
+% Num declarative groundings. 
+\NewDocumentCommand\NumDecGroundings{}{ n_{\delta} }
+
+% Predicates
+\NewDocumentCommand\Predicates{}{ \mathcal{P} }

@@ -1,0 +1,67 @@
+% This is a good idea if your title needs two lines
+% \newcommand\narrowtitlebox{}
+\newcommand\acknowledgments{This work was supported, in part, by the Center for Brains, Minds and
+Machines, NSF STC award 1231216, the Toyota Research
+Institute, CBMM-Siemens Graduate Fellowship, and the MIT-IBM Brain-Inspired Multimedia Comprehension
+project.
+%
+The views and conclusions contained in this document are those of the
+authors and do not represent the official policies, either express or
+implied, of the U.S. Government or any other funding agency.
+%
+The U.S. Government is authorized to reproduce and distribute reprints for
+Government purposes, notwithstanding any copyright notation herein.}
+\input{poster-library.tex}
+
+\title{\huge A title}
+\author{Andrei Barbu}
+\newcommand\emails{{\small abarbu@mit.edu}}
+\institute[1]{MIT}
+\date[August 2018]{August 2018}
+
+\begin{document}
+\begin{frame}{}
+  \begin{columns}[t]
+    \begin{column}{.31\linewidth}
+      \vskip-2ex
+      \begin{block}{\vspace{-0.4ex}Machine vision fails under occlusion}
+        \vspace*{-1.3ex}
+        We collected a large dataset of 12,000 images where subjects hold 150
+        objects. Images were collected of the same hands both occluded by the
+        object they are holding and unoccluded. Each hold was natural and
+        subjects were asked to hold each object many times in different
+        ways. The resulting images show the brittleness of current computer
+        vision in the face of occlusion: mild
+        occlusion leads to incorrect hand-pose estimations.\\
+      \end{block}
+    \end{column}
+
+    \begin{column}{.31\linewidth}
+      \vskip-2ex
+      \begin{block}{Execution in action}
+        \vspace*{-0.5ex}
+        \centering
+        Text!!
+      \end{block}
+    \end{column}
+
+    \begin{column}{.31\linewidth}
+      \vskip-2ex
+      \begin{block}{References}
+        \vspace{-0.5ex}
+        B. Myanganbayar, C. Mata, G. Dekel, B. Katz, G. Ben-Yosef, A. Barbu
+        {\it Partially Occluded Hands: A challenging new dataset for single-image hand pose estimation}.
+        ACCV, to appear.\\[1ex]
+        Preprint and dataset at \textbf{occludedhands.com}
+      \end{block}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\end{document}
+
+%%% Local Variables:
+%%% fill-column: 79
+%%% End:
+
+% LocalWords: tex bibtex env BIBINPUTS BSTINPUTS TEXINPUTS american colour
