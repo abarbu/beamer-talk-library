@@ -40,8 +40,26 @@
 \usepackage{nicefrac}
 \usepackage{graphbox}
 \usepackage[super]{nth}
+\usepackage{xhfill}
+\usepackage{ccg-latex}
+\usepackage{linegoal}
+\usepackage{adjustbox}
+
+\makeatletter
+\newcommand*{\overlaynumber}{\number\beamer@slideinframe}
+\makeatother
+\newcommand*{\debugoverlay}{\Cite{\overlaynumber}}
 
 \newcommand{\TODO}{{\red TODO}\xspace}
+
+\makeatletter
+\newcommand{\nameoverlay}[1]{%
+  \@ifundefined{c@#1}{%
+    \newcounter{#1}%
+    \setcounter{#1}{\overlaynumber}%
+  }{}
+}
+\makeatother
 
 \NewDocumentCommand\placeholder{mmo}{
   \framebox{
@@ -69,8 +87,8 @@
   \only<#1>{\includegraphics[width=#3\textwidth]{#2}}%
 }
 
-\newcommand\image[3]{%
-  \uncover<#1>{\includegraphics[width=#3\textwidth]{#2}}%
+\newcommand\image[2]{%
+  \includegraphics[width=#2\textwidth]{#1}%
 }
 
 \newcommand\Task[6]{%
@@ -425,6 +443,61 @@
   },
   reset transform/.code={\pgftransformreset}
 }
+\makeatother
+
+% \makeatletter
+
+% \newcommand*\Alt{\alt{\Alt@branch0}{\Alt@branch1}}
+
+% \newcommand\Alt@branch[3]{%
+%   \begingroup
+%   \ifbool{mmode}{%
+%     \mathchoice{%
+%       \Alt@math#1{\displaystyle}{#2}{#3}%
+%     }{%
+%       \Alt@math#1{\textstyle}{#2}{#3}%
+%     }{%
+%       \Alt@math#1{\scriptstyle}{#2}{#3}%
+%     }{%
+%       \Alt@math#1{\scriptscriptstyle}{#2}{#3}%
+%     }%
+%   }{%
+%     \sbox0{#2}%
+%     \sbox1{#3}%
+%     \Alt@typeset#1%
+%   }%
+%   \endgroup
+% }
+
+% \newcommand\Alt@math[4]{%
+%   \sbox0{$#2{#3}\m@th$}%
+%   \sbox1{$#2{#4}\m@th$}%
+%   \Alt@typeset#1%
+% }
+
+% \newcommand\Alt@typeset[1]{%
+%   \ifnumcomp{\wd0}{>}{\wd1}{%
+%     \def\setwider   ##1##2{##2##1##2 0}%
+%     \def\setnarrower##1##2{##2##1##2 1}%
+%   }{%
+%     \def\setwider   ##1##2{##2##1##2 1}%
+%     \def\setnarrower##1##2{##2##1##2 0}%
+%   }%
+%   \sbox2{}%
+%   \sbox3{}%
+%   \setwider2{\wd}%
+%   \setwider2{\ht}%
+%   \setwider2{\dp}%
+%   \setnarrower3{\ht}%
+%   \setnarrower3{\dp}%
+%   \leavevmode
+%   \rlap{\usebox#1}%
+%   \usebox2%
+%   \usebox3%
+% }
+% \makeatother
+
+\makeatletter
 
 \newcommand<>\Alt[3][l]{%
   \begingroup%
@@ -639,15 +712,28 @@
   \foreach \x in {0,1,...,4} { \node [anchor=north] at (\x,0) {\x}; }
   \foreach \y in {0,1,...,4} { \node [anchor=east] at (0,\y) {\y}; }}
 
-% \input{figures/hmmtikzlib}
+%\input{figures/hmmtikzlib}
 
 \renewcommand<>{\sout}[1]{\alt#2{\beameroriginal{\sout}{#1}}{#1}}
 
+% \usetheme{CambridgeUS}
+% \usetheme{cbmm}
 \usetheme{Madrid}
+% \usetheme{default}
+% \useoutertheme{cbmm}
+% \usefonttheme{serif}
 
+% % I like the the other theme more
+% % \usetheme{CambridgeUS}
+% \usetheme{Madrid}
+% \useoutertheme{slidenum}
 \useoutertheme{noslidenum}
+% \usefonttheme{serif}
 
 \newcommand{\bgbox}[1]{\colorbox{white}{#1}}
+% \usecolortheme{purdue}
+% \usecolortheme{cbmm}
+% \usecolortheme{mule}
 
 \ifdefined\darkmode
 % For dark colors
@@ -674,8 +760,7 @@
 }
 \makeatother
 
-\graphicspath{{../game-learning/videos}{../game-learning/}{../ll/images}{../ll/}{../images/}{../videos/}{../figures/}{../people/}
-  {game-learning/videos}{game-learning/}{ll/images}{ll/}{images/}{videos/}{figures/}{people/}}
+\graphicspath{{game-learning/videos}{game-learning/}{ll/images}{ll/}{images/}{videos/}{figures/}{people/}}
 \DeclareGraphicsExtensions{.jpg,.png,.pdf}
 
 \newcommand\redsout{\bgroup\markoverwith{\textcolor{red}{\rule[0.5ex]{2pt}{0.6pt}}}\ULon}
@@ -728,3 +813,10 @@
   \vspace{1ex}
   % \insertframetitle
 }
+
+\makeatletter
+\DeclareRobustCommand*{\savepause}[1]{\only<1>{\immediate\write\@auxout{\string\pauseentry{\the\c@framenumber}{#1}{\the\c@beamerpauses}}}}
+\newcommand*{\usepause}[1]{\@ifundefined{pauses@\the\c@framenumber @#1}{1}{\@nameuse{pauses@\the\c@framenumber @#1}}}
+\newcommand*{\pauseentry}[3]{\global\@namedef{pauses@#1@#2}{#3}}
+\makeatother
+
