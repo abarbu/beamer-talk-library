@@ -1,0 +1,162 @@
+\usepackage{pgfplots}
+\usepackage{helvet}
+\usepackage[eulergreek]{sansmath}
+\usepackage{stringstrings}
+\usetikzlibrary{calc}
+\usetikzlibrary{fit}
+\usetikzlibrary{arrows}
+\usetikzlibrary{positioning}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.multipart}
+
+\pgfplotsset{
+  tick label style = {font=\sansmath\sffamily}
+}
+
+\def\stateSize{0.4}
+\def\stateHeight{4}
+\def\stateArcHeight{0.6}
+\def\rectWidth{0.3}
+\def\rectHeight{0.15}
+\def\rectOffset{-1.2}
+\def\featNamePos{-0.7}
+\def\stateSep{1.5}
+
+\newcommand{\mystate}[5]{
+  \draw[] ($(#1,\stateHeight)+(0,#3)$) circle (\stateSize)
+  node[fitting node] (#2) {};
+  %% cannot directly compare floating numbers
+  \newdimen\dummy
+  \dummy = #4 pt
+  \ifthenelse{\dummy > 0 pt}{
+    \node[] (p) at ($(#2.north)+(0,\stateArcHeight)$) {#4};
+    \draw [->, thick] (#2.north) to[out=15,in=0] ($(p.south)-(0,0.05)$)
+    to[out=180,in=165] (#2.north);
+  }{}
+  \dummy = #5 pt
+  \ifthenelse{\dummy > 0 pt}{
+    \draw [->, thick] ($(#2.south west)+(-0.3,-0.1)$) -- (#2) node [midway, above,
+      sloped] {\scalebox{0.7}{#5}};
+  }{}
+}
+
+\makeatletter
+\tikzset{
+  fitting node/.style={
+    inner sep=0pt,
+    fill=none,
+    draw=none,
+    reset transform,
+    fit={(\pgf@pathminx,\pgf@pathminy) (\pgf@pathmaxx,\pgf@pathmaxy)}
+  },
+  reset transform/.code={\pgftransformreset}
+}
+\makeatother
+
+\newcommand{\tikzfig}[2]{
+  \begin{tikzpicture}[#1] #2 \end{tikzpicture}}
+
+\newcommand{\tscope}[2]{\begin{scope}[x={(#1.south east)},y={(#1.north west)}]
+    #2 \end{scope}}
+
+\newcommand{\insertImage}[3]{
+  \node[anchor=south west,inner sep=0] (#3) at (0,0)
+       {\includegraphics[width=#2\textwidth]
+         {#1}};}
+
+\newcommand{\variable}[4]{
+    \draw[thick] (#1,#2) circle (\stateSize) node[fitting node] (#3) {};
+    \node[#4] (name-#3) at ([yshift=-16] #3) {\textbf{#3}};
+}
+
+\newcommand{\constraint}[6]{
+  \node (c) at ($(#1,#2)$)
+        {\includegraphics[width=0.4\textwidth]{#6}};
+  \draw[thick] (#3) -- (c);
+  \draw[thick] (#4) -- (c);
+  \draw[thick] (#5) -- (c);
+}
+
+% #1-#5 node lable #6 node name #7,#8 x,y
+\newcommand{\latticeNodeFive}[8]{
+  \node[draw, minimum width=3cm, minimum height=1cm, anchor=south] (#6) at (#7, #8)
+       {$\substack{#4,#5\\#1,#2,#3}$};
+}
+
+% #1-#3 node lable #4 node name #5,#6 x,y
+\newcommand{\latticeNodeThree}[6]{
+  \node[draw, minimum width=2.4cm, minimum height=0.85cm, anchor=south] (#4) at (#5, #6)
+       {#1, #2, #3};
+}
+
+% #1,#2 node lable #3 node name #4,#5 x,y
+\newcommand{\latticeNodeTwo}[5]{
+  \node[draw, minimum width=1.7cm, minimum height=0.85cm, anchor=south] (#3) at (#4, #5)
+       {#1, #2};
+}
+
+% #1 node lable #2 node name #3,#4 x,y #5 draw border
+\newcommand{\latticeNode}[5]{
+  \node[#5,minimum width=1.7cm, minimum height=1.06cm, anchor=south] (#2) at (#3,#4) {#1};
+}
+
+% the two types of lattices are scaled differently, so need two functions
+% #1 supernode label, #2 node block colour #3 node block label
+% #4 link block colour #5 link block label, #6 lattice label
+\newcommand{\latticeOverlayT}[6]{
+  \fill[#2,opacity=0.25]
+  let
+  \p1=($(#1.west)!0.125!(#1.east)$),
+  \p2=($(#1.west)!0.235!(#1.east)$),
+  \p3=(#1.south),
+  \p4=($(#1.north)!0.08!(#1.south)$)
+  in (\x1,\y3) rectangle (\x2, \y4);
+  \fill[#4,opacity=0.25]
+  let
+  \p1=($(#1.west)!0.235!(#1.east)$),
+  \p2=($(#1.west)!0.343!(#1.east)$),
+  \p3=($(#1.south)!0.057!(#1.north)$),
+  \p4=($(#1.north)!0.138!(#1.south)$)
+  in (\x1,\y3) rectangle (\x2, \y4);
+  \path
+  let
+  \p1=($(#1.west)!0.1795!(#1.east)$),
+  \p2=($(#1.south)$) in node[#2,anchor=south] at ($(\x1,\y2)-(0,0.035)$) {#3};
+  \path let \p1=($(#1.west)!0.289!(#1.east)$), \p2=($(#1.south)$) in
+  node[#4,anchor=south] at ($(\x1,\y2)-(0,0.035)$) {#5};
+  \path let \p1=($(#1.west)!0.5!(#1.east)$), \p2=($(#1.south)$) in node (#1l) at
+  ($(\x1,\y2)-(0,0.05)$) {#6};
+}
+
+\newcommand{\latticeOverlayW}[6]{
+  \fill[#2,opacity=0.25]
+  let
+  \p1=($(#1.west)!0.177!(#1.east)$),
+  \p2=($(#1.west)!0.291!(#1.east)$),
+  \p3=(#1.south),
+  \p4=($(#1.north)!0.11!(#1.south)$)
+  in (\x1,\y3) rectangle (\x2, \y4);
+  \fill[#4,opacity=0.25]
+  let
+  \p1=($(#1.west)!0.291!(#1.east)$),
+  \p2=($(#1.west)!0.379!(#1.east)$),
+  \p3=($(#1.south)!0.068!(#1.north)$),
+  \p4=($(#1.north)!0.171!(#1.south)$)
+  in (\x1,\y3) rectangle (\x2, \y4);
+  \path
+  let
+  \p1=($(#1.west)!0.234!(#1.east)$),
+  \p2=($(#1.south)$) in node[#2,anchor=south] at ($(\x1,\y2)-(0,0.035)$) {#3};
+  \path let \p1=($(#1.west)!0.335!(#1.east)$), \p2=($(#1.south)$) in
+  node[#4,anchor=south] at ($(\x1,\y2)-(0,0.035)$) {#5};
+  \path let \p1=($(#1.west)!0.5!(#1.east)$), \p2=($(#1.south)$) in node (#1l) at
+  ($(\x1,\y2)-(0,0.05)$) {#6};
+}
+
+\tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
+   1 with {\arrow[semithick]{open triangle 60}}},
+   double distance=3pt, shorten >= 5.5pt,
+   preaction = {decorate},
+   postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
+\tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
